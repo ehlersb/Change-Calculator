@@ -28,9 +28,8 @@ public class main {
             scanline.next();
             String booleanOperator = scanline.next();
             secondLine = Integer.parseInt(scanline.next());
-
-            AdditivePersistence ap = new AdditivePersistence(Long.parseLong(input));
-            System.out.println(input + " => " + ap.calculate());
+            ChangeCalculator cc = new ChangeCalculator(firstLine, booleanOperator, secondLine);
+            cc.calculateChange();
         }
     }
 }
