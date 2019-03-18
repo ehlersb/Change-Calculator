@@ -15,29 +15,36 @@ public class ChangeCalculator {
         this.amount = firstLine.get(0);
         this.bindingNumber = secondLine;
         this.booleanOperator = booleanOperator;
+        this.changeArray = new ArrayList<>();
+        this.solutions = new ArrayList<>();
         for(int i = 1; i < firstLine.size(); i++) {
             this.changeArray.add(new Change((firstLine.get(i))));
         }
     }
 
     public void calculateChange() {
-        int temp = amount;
+        int leftover;
+        int addedup;
         int numCoins;
         String coins;
+
         for(int i = 0; i < changeArray.size(); i++)
         {
             numCoins = 0;
             coins = "";
+            addedup = 0;
+            leftover = amount;
             for(int j = i; j < changeArray.size(); j++)
             {
                 int jCoinValue = changeArray.get(j).getCoinValue();
-                if((amount - jCoinValue > -1)) {
-                    temp -= jCoinValue;
+                if((leftover - jCoinValue > -1)) {
+                    leftover -= jCoinValue;
                     numCoins++;
+                    addedup += jCoinValue;
                     coins += jCoinValue + " ";
                 }
             }
-            if(comparator(numCoins)) {
+            if(comparator(numCoins) && addedup == amount) {
                 solutions.add(coins);
             }
 
