@@ -6,7 +6,7 @@ import java.util.*;
  */
 public class ChangeCalculator {
 
-    private ArrayList<Change> changeArray;
+    private ArrayList<Integer> changeArray;
     private int amount;
     private String booleanOperator;
     private int bindingNumber;
@@ -19,7 +19,7 @@ public class ChangeCalculator {
         this.changeArray = new ArrayList<>();
         this.solutions = new ArrayList<>();
         for (int i = 1; i < firstLine.size(); i++) {
-            this.changeArray.add(new Change((firstLine.get(i))));
+            this.changeArray.add(firstLine.get(i));
         }
     }
 
@@ -28,20 +28,32 @@ public class ChangeCalculator {
         int addedup;
         int numCoins;
         String coins;
-
+        HashSet<ArrayList<Integer>> changeArrayFinal = new HashSet<>();
         //get every permutation of power set of changearray
-        Set<Change> set = new HashSet<>(changeArray);
+        Set<Integer> set = new HashSet<>(changeArray);
         HashSet<HashSet<Integer>> powerSetChangeArray = powerSet(set);
         HashSet<ArrayList<Integer>> powerPermutation = new HashSet<>();
+        HashSet<ArrayList<Integer>> tempSetofALs = new HashSet<>();
+        for(HashSet<Integer> hs : powerSetChangeArray) { //create new HashSet of ArrayLists of integers to permute FROM the powerset Set of Sets
+            ArrayList<Integer> a = new ArrayList<>();
+            for(Integer i : hs) {
+                a.add(i);
+            }
+            tempSetofALs.add(a);
+        }
+        for(ArrayList<Integer> a :tempSetofALs) {
+            permute(a, a.size(), changeArrayFinal);
+        }
 
 
-        for (int i = 0; i < changeArray.size(); i++) {
+
+        for (ArrayList<Integer> a : changeArrayFinal) {
             numCoins = 0;
             coins = "";
             addedup = 0;
             leftover = amount;
-            for (int j = i; j < changeArray.size(); j++) {
-                int jCoinValue = changeArray.get(j).getCoinValue();
+            for (int i = 0; i < a.size(); i++) {
+                int jCoinValue = changeArray.get(i);
                 if ((leftover - jCoinValue > -1)) {
                     leftover -= jCoinValue;
                     numCoins++;
@@ -91,22 +103,22 @@ public class ChangeCalculator {
             Collections.swap(arr, k, i);
         }
         if (k == arr.size() - 1) {
-            System.out.println(java.util.Arrays.toString(arr.toArray()));
+            //System.out.println(java.util.Arrays.toString(arr.toArray()));
             powerPermutation.add(arr);
         }
     }
 
-    private static <T> Set<Set<T>> powerSet(Set<T> originalSet) { //credit to https://stackoverflow.com/a/1670871 (I did not come up with this!)
-        Set<Set<T>> sets = new HashSet<Set<T>>();
+    private static HashSet<HashSet<Integer>> powerSet(Set<Integer> originalSet) { //credit to https://stackoverflow.com/a/1670871 (I did not come up with this!)
+        HashSet<HashSet<Integer>> sets = new HashSet<HashSet<Integer>>();
         if (originalSet.isEmpty()) {
-            sets.add(new HashSet<T>());
+            sets.add(new HashSet<Integer>());
             return sets;
         }
-        List<T> list = new ArrayList<T>(originalSet);
-        T head = list.get(0);
-        Set<T> rest = new HashSet<T>(list.subList(1, list.size()));
-        for (Set<T> set : powerSet(rest)) {
-            Set<T> newSet = new HashSet<T>();
+        List<Integer> list = new ArrayList<Integer>(originalSet);
+        Integer head = list.get(0);
+        HashSet<Integer> rest = new HashSet<Integer>(list.subList(1, list.size()));
+        for (HashSet<Integer> set : powerSet(rest)) {
+            HashSet<Integer> newSet = new HashSet<Integer>();
             newSet.add(head);
             newSet.addAll(set);
             sets.add(newSet);
