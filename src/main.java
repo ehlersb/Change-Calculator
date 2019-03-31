@@ -8,7 +8,7 @@ public class main {
 
     public static void main(String[] args) {
         String input;
-        System.out.println("Enter a number to calculate its Additive Persistence");
+        System.out.println("Enter two lines specifying the change calculator I/O");
         System.out.println("Enter '!' to quit.");
         while(true) {
             Scanner scan = new Scanner(System.in);
